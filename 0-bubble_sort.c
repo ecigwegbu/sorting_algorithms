@@ -9,12 +9,12 @@
 
 void bubble_sort(int *array, size_t size)
 {
-	if (array == NULL)
-	{
-		return;
-	}
 	size_t i, j;
 	int temp, swap = 1;
+
+	/* handle NULL/trivial array edge case */
+	if (array == NULL || size == 0)
+		return;
 
 	for (i = 0; i < (size - 1) && swap; i++)  /* i is starting cell */
 	/* i is starting cell; ending cell will be (size - 1 - i) */
