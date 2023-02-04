@@ -10,6 +10,7 @@ void print_list(const listint_t *list)
 {
 	int i;
 
+	printf("ListAdd in Pr: %p\n", (void *) list);
 	i = 0;
 	while (list)
 	{
