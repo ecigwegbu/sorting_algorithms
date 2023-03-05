@@ -2,7 +2,7 @@
 #include "sort.h"
 
 size_t get_min(int *array, size_t size, size_t start);
-void move_elt(int *array, size_t given_indx, size_t before_indx);
+void swap_elts(int *array, size_t given_indx, size_t current_node);
 
 /**
  * selection_sort - sort a list using selection sort algorithm
@@ -31,7 +31,7 @@ void selection_sort(int *array, size_t size)
 		/* move elt at min_indx to just before node */
 		if (min_indx == node) /* all remaining elements are sorted */
 			continue;
-		move_elt(array, min_indx, node);
+		swap_elts(array, min_indx, node);
 		print_array(array, size);
 	}
 }
@@ -62,19 +62,16 @@ size_t get_min(int *array, size_t size, size_t start)
 }
 
 /**
- * move_elt - move an element leftwards to a desired position in an array
+ * swap_elts - swap elts at given index with the element at current node
  * @array: array of integers
  * @given_indx: the index of the element to move
- * @before_indx: the index of the element before which to insert given index
+ * @current_node: the index of the element before which to insert given index
  */
-void move_elt(int *array, size_t given_indx, size_t before_indx)
+void swap_elts(int *array, size_t given_indx, size_t current_node)
 {
 	int temp;
-	size_t j;
 
 	temp = array[given_indx];
-
-	for (j = given_indx; j >= before_indx + 1; j--)
-		array[j] = array[j - 1];
-	array[before_indx] = temp;
+	array[given_indx] = array[current_node];
+	array[current_node] = temp;
 }
