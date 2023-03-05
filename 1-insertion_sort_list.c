@@ -18,9 +18,12 @@ void insertion_sort_list(listint_t **list)
 
 	node = (*list)->next;  /* start checking from the second node */
 	while (node != NULL)
+	{
 		/* insert node in right place and */
 		/* set ptr to the old ptr->next   */
 		do_insert(list, &node);
+		print_list(*list); /* debug */
+	}
 }
 
 /**
@@ -61,7 +64,6 @@ void do_insert(listint_t **list, listint_t **node)
 
 		*list = *node;  /* reset head pointer */
 		(*node) = nextNode;  /*reset node */
-		print_list(*list);  /* debug */
 	}
 	else /* insert after ptr */
 	{
@@ -77,6 +79,5 @@ void do_insert(listint_t **list, listint_t **node)
 		(*node)->prev = ptr;
 
 		(*node) = nextNode;
-		print_list(*list); /* debug */
 	}
 }
