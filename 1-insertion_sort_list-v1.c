@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "sort.h"
 
-void do_swaps(listint_t **list, listint_t **node);
+void do_insert(listint_t **list, listint_t **node);
 
 /**
  * insertion_sort_list - sort a list using insertion sort algorithm
@@ -10,35 +10,44 @@ void do_swaps(listint_t **list, listint_t **node);
 
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *node = NULL, *nextNode;
+	listint_t *node = NULL;
 
-	/* null checks: at least 2 nodes must be present before proceding*/
+	/* null checks */
 	if (list == NULL || *list == NULL || (*list)->next == NULL)
 		return;
 
 	node = (*list)->next;  /* start checking from the second node */
-	while (node != NULL) /* swap node left until it fits; do to list end*/
-	{
-		nextNode = node->next; /* save next node before any swaps */
-		while (node->prev && (node->n < node->prev->n))
-		{
-			/*swap node and node->prev */
-			do_swaps(list, &node);
-			print_list(*list);
-		}
-		node = nextNode; /* reset node */
-	}
+	while (node != NULL)
+		/* insert node in right place and */
+		/* set ptr to the old ptr->next   */
+		do_insert(list, &node);
 }
 
 /**
- * do_swaps - swap nodes until node is in the right place
- * @list: double pointer to doubly-linked list to sort
- * @node: double pointer to node being processed
+ * do_insert - insert a node in its sorted position
+ * @list: double pointer to the head node of the doubly linked list
+ * @node: double pointer to the node under consideration
  */
 
-void do_swaps(listint_t **list, listint_t **node)
+void do_insert(listint_t **list, listint_t **node)
 {
-	listint_t *ptr = (*node)->prev->prev, *nextNode = (*node)->next;
+	listint_t *nextNode, *ptr;
+
+	ptr = (*node)->prev;
+
+	nextNode = (*node)->next; /* save this before any swaps */
+
+
+	/* check if swap needed */
+	if ((*node)->n >= ptr->n) /* swap not needed */
+	{
+		(*node) = nextNode;  /* reset node */
+		return;
+	}
+
+	/* Swap needed. Now first find insert position, ie move ptr */
+	while ((ptr != NULL) && ((*node)->n < ptr->n))
+		ptr = ptr->prev;
 
 	if (ptr == NULL) /* insert at beginning */
 	{
@@ -52,7 +61,7 @@ void do_swaps(listint_t **list, listint_t **node)
 		(*list)->prev = (*node); /* nasty bug!!!???? */
 
 		*list = *node;  /* reset head pointer */
-		/*(*node) = nextNode;  reset node */
+		(*node) = nextNode;  /*reset node */
 	}
 	else /* insert after ptr */
 	{
@@ -67,6 +76,7 @@ void do_swaps(listint_t **list, listint_t **node)
 		(*node)->next->prev = (*node);
 		(*node)->prev = ptr;
 
-		/*(*node) = nextNode;*/
+		(*node) = nextNode;
 	}
+	print_list(*list); /* debug */
 }
