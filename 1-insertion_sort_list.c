@@ -18,12 +18,9 @@ void insertion_sort_list(listint_t **list)
 
 	node = (*list)->next;  /* start checking from the second node */
 	while (node != NULL)
-	{
 		/* insert node in right place and */
 		/* set ptr to the old ptr->next   */
 		do_insert(list, &node);
-		print_list(*list); /* debug */
-	}
 }
 
 /**
@@ -42,12 +39,13 @@ void do_insert(listint_t **list, listint_t **node)
 
 
 	/* check if swap needed */
-	if ((*node)->n >= ptr->n)
+	if ((*node)->n >= ptr->n) /* swap not needed */
 	{
-		(*node) = nextNode;
+		(*node) = nextNode;  /* reset node */
 		return;
 	}
-	/* find insert poistion */
+
+	/* Swap needed. Now first find insert position, ie move ptr */
 	while ((ptr != NULL) && ((*node)->n < ptr->n))
 		ptr = ptr->prev;
 
@@ -80,4 +78,5 @@ void do_insert(listint_t **list, listint_t **node)
 
 		(*node) = nextNode;
 	}
+	print_list(*list); /* debug */
 }
