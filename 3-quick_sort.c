@@ -14,6 +14,10 @@ void quick_sort(int *array, size_t size)
 {
 	ssize_t start_indx = 0, end_indx = (ssize_t)size - 1;
 
+	/* NULL check */
+	if (array == NULL)
+		return;
+
 	q_sort(array, start_indx, end_indx, size);
 }
 
