@@ -1,77 +1,66 @@
 #include <stdio.h>
 #include "sort.h"
 
-size_t get_min(int *array, size_t size, size_t start);
-void swap_elts(int *array, size_t given_indx, size_t current_node);
+void q_sort(int *array, size_t start_indx, size_t end_indx);
+size_t q_part(int *array, size_t start_indx, size_t end_indx);
 
 /**
- * selection_sort - sort a list using selection sort algorithm
- * @array: the array containing the integer elements
- * @size: the numbeer of elements in the array
+ * quick_sort - sorting algorithm using quick sort and lomuto parti'n scheme
+ * @array: array of integers to sort
+ * @size: the number of elements of the array
  */
-
-void selection_sort(int *array, size_t size)
+void quick_sort(int *array, size_t size)
 {
-	size_t node; /* the index of the element under consideration */
-	/* It is the node before which the smallest value will be moved */
-	size_t min_indx;
-
-	/* Array size must be at least 2 before proceding*/
-	if (size < 2)
-		return;
-
-	node = 0;  /* start processing from first node */
-
-	/* find smlst node starting from node, move it b4 node; for all nodes*/
-	for (node = 0; node < size - 1; node++)
-	{
-		/* find min node */
-		min_indx = get_min(array, size, node);
-
-		/* move elt at min_indx to just before node */
-		if (min_indx == node) /* all remaining elements are sorted */
-			continue;
-		swap_elts(array, min_indx, node);
-		print_array(array, size);
-	}
+	size_t start_indx = 0, end_indx = size - 1;
+	q_sort(array, start_indx, end_indx);
 }
 
 /**
- * get_min - get the smallest value from given node to array end
- * @array: array of integers
- * @size: size of the array
- * @start: starting node
- * Return: the index of the node with minimum value
+ * q_sort - quick sort helper function
+ * @array: array to sort
+ * @start_indx: starting index
+ * @end_indx: ending index
  */
-size_t get_min(int *array, size_t size, size_t start)
+void q_sort(int *array, size_t start_indx, size_t end_indx)
 {
-	size_t indx, min_indx;
-	int min;  /* min value at min_indx */
+	size_t pivot;
 
-	min = array[start];   /* initialise min before iterating */
-	min_indx = start;
-	for (indx = start; indx < size; indx++) /* scan from start to end */
+	if (end_indx <= start_indx)
+		return; /* base case */
+
+	pivot = q_part(array, start_indx, end_indx);
+	q_sort(array, start_indx, pivot - 1);
+	q_sort(array, pivot + 1, end_indx);
+
+
+}
+
+/**
+ * q_part - quick sort partitioning helper function
+ * @array: array to sort
+ * @start_indx: starting index
+ * @end_indx: ending index
+ * Return: the pivot location
+ */
+size_t q_part(int *array, size_t start_indx, size_t end_indx)
+{
+	int pivot = array[end_indx], temp;
+	size_t i = start_indx - 1, j;
+
+	for (j = start_indx; j <= end_indx - 1; j++)
 	{
-		if (array[indx] < min)
+		if (array[j] < pivot)
 		{
-			min = array[indx];
-			min_indx = indx;
+			i++;
+			temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
 		}
 	}
-	return (min_indx);
-}
+	i++;
+	temp = array[i];
+	array[i] = array[end_indx];
+	array[end_indx] = temp;
 
-/**
- * swap_elts - swap elts at given index with the element at current node
- * @array: array of integers
- * @given_indx: the index of the element to move
- * @current_node: the index of the element before which to insert given index
- */
-void swap_elts(int *array, size_t given_indx, size_t current_node)
-{
-	int temp;
-
-	temp = array[given_indx];
-	array[given_indx] = array[current_node];
-	array[current_node] = temp;
+	return (i);
 }
