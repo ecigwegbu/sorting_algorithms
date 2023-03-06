@@ -72,10 +72,13 @@ ssize_t q_part(int *array, ssize_t start_indx, ssize_t end_indx, size_t size)
 	/* move i to determine the final restin place of the pivot: */
 	i++;  /* move i_index box once j reaches the pivot; */
 	/* then swap array i, j, thus placing the pivot in its final place */
-	temp = array[i];
-	array[i] = array[end_indx];
-	array[end_indx] = temp;
-	print_array(array, size);  /*display result of swap */
+	if (array[i] != array[end_indx])
+	{
+		temp = array[i];
+		array[i] = array[end_indx];
+		array[end_indx] = temp;
+		print_array(array, size);  /*display result of swap */
+	}
 
 	return (i);  /* i is the pivot location; use to split array into 2 */
 }
