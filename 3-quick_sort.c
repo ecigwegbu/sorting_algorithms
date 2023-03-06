@@ -12,6 +12,7 @@ size_t q_part(int *array, size_t start_indx, size_t end_indx);
 void quick_sort(int *array, size_t size)
 {
 	size_t start_indx = 0, end_indx = size - 1;
+
 	q_sort(array, start_indx, end_indx);
 }
 
